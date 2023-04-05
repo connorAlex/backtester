@@ -7,19 +7,32 @@ const findUser = async (userObject: rawUserData): Promise<Array<IUser>> => {
     return await result;
 }
 
-const createUser = async (userObject: rawUserData) => {
-    if ( (await findUser(await userObject)).length >= 1 ){
+const createUser = async (userObject: rawUserData): Promise<Boolean> => {
+    let queryResults = await findUser(userObject);
+
+    if ( queryResults.length === 0 ){
         let user = new User(userObject);
-        await user.save();
+
+        try {
+            await user.save();
+        } catch (e) {
+            return false;
+        }
+
+        return true;
     }
+
+    return false;
     
 };
 
-const deleteUser = async (userObject: rawUserData) => {
+const deleteUser = async (userObject: rawUserData): Promise<Boolean> => {
     const result = findUser(userObject);
-    if (result !== null) {
-        User.deleteOne()
+    if ((await result).length > 0) {
+        await User.deleteOne(userObject);
+        return true;
     }
+    return false;
 }
 
 

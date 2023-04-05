@@ -1,5 +1,5 @@
 import { describe, assert, expect, it, beforeAll, afterAll} from 'vitest';
-import {findUser, createUser}  from '../models/userFactory';
+import {findUser, createUser, deleteUser}  from '../models/userFactory';
 import { getConnection } from '../loaders/mongoose';
 import { User } from '../schemas/userSchema';
 
@@ -26,7 +26,24 @@ describe('test suite', () => {
         expect(user).toHaveLength(1);
     })
 
-    // it("create a user", () => {
+    it("create a user", async () => {
+        const testUser2: rawUserData = {
+            name: "BOB",
+            email: "best_email.com",
+            password: "bassword",
+            createdDate: new Date("2023-04-05T12:00:00.000Z")
+        }
+        expect(await createUser(testUser2)).toBe(true);
+    });
 
-    // })
+    it("delete a user", async () => {
+        const testUser2: rawUserData = {
+            name: "BOB",
+            email: "best_email.com",
+            password: "bassword",
+            createdDate: new Date("2023-04-05T12:00:00.000Z")
+        };
+        expect(await deleteUser(testUser2)).toBe(true);
+
+    })
 });
