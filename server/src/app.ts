@@ -7,6 +7,7 @@ import { getConnection } from "./loaders/mongoose";
 const start = async () => {
     // use express to start sever
     const app = express();
+    app.use(express.json());
     app.use('/', router);
     let db = await getConnection();
 
