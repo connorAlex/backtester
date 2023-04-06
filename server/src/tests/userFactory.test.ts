@@ -1,5 +1,5 @@
 import { describe, assert, expect, it, beforeAll, afterAll} from 'vitest';
-import {findUser, createUser, deleteUser}  from '../models/userFactory';
+import {findUser, createUser, deleteUser, doesUserExist}  from '../models/userFactory';
 import { getConnection } from '../loaders/mongoose';
 import { User } from '../schemas/userSchema';
 
@@ -19,6 +19,20 @@ describe('test suite', () => {
     it ("test if mongoose.find() works", async () => { 
         const docs = await User.find({});
         expect(docs.length).toBeGreaterThan(0);
+    })
+
+    it("verify user exists", async () => {
+        expect(await doesUserExist(testUser)).toBe(true);
+    });
+
+    it("verify user doesn't exist", async () => {
+        const testUser2: rawUserData = {
+            name: "blipp",
+            email: "best_email.com",
+            password: "bassword",
+            createdDate: new Date("2023-04-05T12:00:00.000Z")
+        }
+        expect(await doesUserExist(testUser2)).toBe(false);
     })
 
     it("find a user", async () => {
