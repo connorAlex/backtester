@@ -1,15 +1,15 @@
 import {Router, Request, Response} from "express";
 import {createUser} from '../../models/userFactory'
-import { requiresAuth } from "express-openid-connect";
 export const router = Router();
 
 //home page
 router.get('/', (req: Request, res: Response) => {
-    res.send(req.oidc.isAuthenticated() ? "Logged in" : "Logged out");
+    res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+
 });
 
-router.get('/profile', requiresAuth(), (req: Request, res: Response) => {
-    res.send(JSON.stringify(req.oidc.user));
+router.get('/profile', (req: Request, res: Response) => {
+    //res.send(JSON.stringify(req.body));
 });
 
 router.get('/login', (req: Request, res: Response) => {
