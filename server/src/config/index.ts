@@ -10,5 +10,6 @@ export default {
     db_url: process.env.DB_URL,
     db_users: process.env.DB_COLL,
     db_name: process.env.DB_NAME,
-    auth_secret: process.env.AUTH_SECRET
+    auth_secret: process.env.AUTH_SECRET,
+    poly_key: process.env.POLY_KEY,
 }
