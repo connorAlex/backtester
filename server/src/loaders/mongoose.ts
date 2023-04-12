@@ -2,6 +2,7 @@ import config from '../config';
 import mongoose, { Connection, Mongoose } from 'mongoose';
 import { Db } from 'mongodb';
 
+
 const getConnection = async (): Promise<Mongoose> => {
 
     if (config.db_url === undefined){
