@@ -8,3 +8,14 @@ interface userAggregateRequest {
     sort?: "asc" | "desc",
     limit?: number,
 }
+
+interface aggregateResponse {
+    ticker: String,
+    queryCount: number,
+    resultsCount: number,
+    adjusted: boolean,
+    results: Array<Object>,
+    status: String,
+    request_id: String,
+    count: number
+}
