@@ -7,7 +7,7 @@ import 'data-forge-indicators';
 
 const formatResponse = async (res: any)=> {
         
-    const data = new dataForge.DataFrame(res.results)
+    return new dataForge.DataFrame(res.results)
         .renameSeries({
             t: "time",
             c: "close",
@@ -21,11 +21,16 @@ const formatResponse = async (res: any)=> {
         .transformSeries({
             "time": value => new Date(value).toUTCString()
         })
-        .setIndex("time");
+        .setIndex("time")
 
-    return data;
+    
+}
+
+const computePercentage = (num: number): number => {
+    return (num / 100)
 }
 
 export {
     formatResponse,
+    computePercentage,
 }
