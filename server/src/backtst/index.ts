@@ -94,5 +94,3 @@ const buildAnalysis = async (request: userAggregateRequest): Promise<IAnalysis> 
 const printData = async (tradeData: Promise<IAnalysis>) => {
     console.table(await tradeData); 
 }
-
-printData(buildAnalysis(sampleRequest));
