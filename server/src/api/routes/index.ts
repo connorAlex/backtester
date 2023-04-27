@@ -1,32 +1,36 @@
 import {Router, Request, Response} from "express";
 import {createUser} from '../../models/userFactory'
+import { buildAnalysis } from "../../backtst";
+import { userAggregateSchema, joiValidate } from "../../schemas/joiSchema";
 export const router = Router();
 
 //home page
 router.get('/', (req: Request, res: Response) => {
-    res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+    // res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+    res.send("welcome to 8080").status(200)
 
+});
+router.post('/', async (req: Request, res: Response) => {
+    let body = joiValidate(req.body, userAggregateSchema);
+    
+    if (body.error !== undefined) {
+        res.status(400).send("Error, invalid user input");
+    } else {
+        res.status(200).send(body);    
+    }
 });
 
 router.get('/profile', (req: Request, res: Response) => {
     //res.send(JSON.stringify(req.body));
 });
 
-router.get('/login', (req: Request, res: Response) => {
-    res.send('Login Page').status(200);
-});
 
-router.post('/login', (req: Request, res: Response) => {
-    // user submits their username and password.
-    // return boolean?
-})
-
-router.post('/signup', async (req: Request, res: Response) => {
+// router.post('/signup', async (req: Request, res: Response) => {
     
-    const user = await createUser(req.body);
-    if (user) {
-        res.send('New User Added').status(200);
-    } else {
-        res.send('User Not Added').status(401);
-    }
-});
+//     const user = await createUser(req.body);
+//     if (user) {
+//         res.send('New User Added').status(200);
+//     } else {
+//         res.send('User Not Added').status(401);
+//     }
+// });
