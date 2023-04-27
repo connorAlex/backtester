@@ -7,6 +7,7 @@ interface userAggregateRequest {
     adjusted?: boolean,
     sort?: "asc" | "desc",
     limit?: number,
+    movingAverageDays?: number
 }
 
 interface aggregateResponse {
@@ -14,8 +15,20 @@ interface aggregateResponse {
     queryCount: number,
     resultsCount: number,
     adjusted: boolean,
-    results: Array<Object>,
+    results: Array<Results>,
     status: String,
     request_id: String,
-    count: number
+    count: number,
+}
+
+type Results = {
+    c: number,
+    h: number,
+    l: number,
+    n?: number,
+    o: number,
+    t: number,
+    v: number,
+    vw?: number,
+    otc?: boolean,
 }
