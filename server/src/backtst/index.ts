@@ -46,7 +46,7 @@ const stopLoss = (args: any, percent: number) => {
 
 
 const createStrategy = (entry: any, exit: any, stop: any) => {
-    let strategy: strategy = {
+    let strategy: strategyType = {
         entryRule: entry,
         exitRule: exit,
         stopLoss: stop
@@ -93,4 +93,7 @@ const buildAnalysis = async (request: userAggregateRequest): Promise<IAnalysis> 
 
 const printData = async (tradeData: Promise<IAnalysis>) => {
     console.table(await tradeData); 
+}
+export {
+    buildAnalysis
 }
