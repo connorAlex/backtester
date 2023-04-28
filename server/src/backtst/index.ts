@@ -63,7 +63,7 @@ const getData = async (req: userAggregateRequest) => {
     return await jsonSeries;
 }
 
-const buildAnalysis = async (request: userAggregateRequest): Promise<IAnalysis> => {
+const buildAnalysis = async (request: userAggregateRequest): Promise<IAnalysis | Error> => {
     const days = request.movingAverageDays? request.movingAverageDays: 0;
     const strategy = createStrategy(
         eRule,
@@ -84,11 +84,19 @@ const buildAnalysis = async (request: userAggregateRequest): Promise<IAnalysis> 
         .withSeries("sma", await movingAverage)
         .bake();
 
-    const trades = backtest(strategy, await inputSeries);
-    const analysis = analyze(10000, await trades);
+    let trades = null;
+    try {
+        trades = backtest(strategy, await inputSeries);
+    } catch(error) {
+        return Error("Error: Backtest Failed")
+    }
 
-    return (await analysis);
-
+    if (trades === null) {
+        return Error("Error: Backtest Failed");
+    } else {
+        const analysis = analyze(10000, await trades);
+        return (await analysis);
+    }
 }
 
 const printData = async (tradeData: Promise<IAnalysis>) => {
