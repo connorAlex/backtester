@@ -1,7 +1,8 @@
-import {Router, Request, Response} from "express";
+import {Router, Request, Response, ErrorRequestHandler} from "express";
 import {createUser} from '../../models/userFactory'
 import { buildAnalysis } from "../../backtst";
 import { userAggregateSchema, joiValidate } from "../../schemas/joiSchema";
+import { IAnalysis } from "grademark";
 export const router = Router();
 
 //home page
@@ -10,13 +11,17 @@ router.get('/', (req: Request, res: Response) => {
     res.send("welcome to 8080").status(200)
 
 });
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response, next) => {
     let body = joiValidate(req.body, userAggregateSchema);
-    
     if (body.error !== undefined) {
-        res.status(400).send("Error, invalid user input");
+        res.status(400).send(`Error, invalid user input: \n${body.error}`);
     } else {
-        res.status(200).send(body);    
+        let analysis = await buildAnalysis(body.value) 
+        if (await analysis instanceof Error) {
+            res.status(400).send(await analysis);
+        }else {
+            res.status(200).send(await analysis);
+        }
     }
 });
 
